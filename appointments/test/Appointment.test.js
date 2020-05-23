@@ -100,7 +100,7 @@ describe('AppoiontmentsDayView', () => {
     ).toEqual('button');
   });
 
-  it.skip('renders another appointment when selected', () => {
+  it('renders another appointment when selected', () => {
     render(<AppointmentsDayView appointments={appointments} />);
     const button = container.querySelectorAll('button')[1];
     ReactTestUtils.Simulate.click(button);
