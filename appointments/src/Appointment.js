@@ -1,7 +1,15 @@
 import React, {useState} from 'react';
 
 export const Appointment = ({ customer }) => (
-  <div>{customer.firstName}</div>
+  <table>
+    <tbody>
+      <tr>
+        <td>
+          {customer.firstName}
+        </td>
+      </tr>
+    </tbody>
+  </table>
 );
 
 const appointmentTimeOfDay = startsAt => {

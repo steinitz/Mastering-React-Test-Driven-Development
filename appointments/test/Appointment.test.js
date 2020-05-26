@@ -6,8 +6,6 @@ import {
   AppointmentsDayView,
 } from '../src/Appointment';
 
-
-
 describe('Appointment', () => {
   let container;
   let customer;
@@ -30,9 +28,23 @@ describe('Appointment', () => {
     render(<Appointment customer={customer} />);
     expect(container.textContent).toMatch('Jordan');
   });
+
+  it('renders customer name in a valid table structure', () => {
+    customer = { firstName: 'Alice' };
+    render(<Appointment customer={customer} />);
+    expect(container.querySelector('table')).not.toBeNull();
+    expect(container.querySelector('tbody')).not.toBeNull();
+    expect(container.querySelector('tr')).not.toBeNull();
+    expect(container.querySelector('td')).not.toBeNull();
+    // querySelector returns first match
+    // querySelectorAll returns NodeList (array)
+    expect(container.querySelector('td').textContent).toEqual('Alice');
+  });
+
+
 });
 
-describe('AppoiontmentsDayView', () => {
+describe('AppointmentsDayView', () => {
   let container;
 
   const render = component =>
