@@ -3,12 +3,17 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import {
   Appointment,
+  appointmentTimeOfDay,
   AppointmentsDayView,
 } from '../src/Appointment';
 
+import {sampleAppointments} from './sampleData';
+
+const appointments = sampleAppointments;
+
 describe('Appointment', () => {
   let container;
-  let customer;
+  let appointment;
 
   const render = component =>
     ReactDOM.render(component, container);
@@ -18,20 +23,20 @@ describe('Appointment', () => {
   });
 
   it('renders the customer first name', () => {
-    customer = { firstName: 'Ashley' };
-    render(<Appointment customer={customer} />);
+    appointment = {customer: {firstName: 'Ashley'}};
+    render(<Appointment appointment={appointment} />);
     expect(container.textContent).toMatch('Ashley');
   });
 
   it('renders another customer first name', () => {
-    customer = { firstName: 'Jordan' };
-    render(<Appointment customer={customer} />);
+    appointment = {customer: {firstName: 'Jordan'}};
+    render(<Appointment appointment={appointment} />);
     expect(container.textContent).toMatch('Jordan');
   });
 
   it('renders customer name in a valid table structure', () => {
-    customer = { firstName: 'Alice' };
-    render(<Appointment customer={customer} />);
+    appointment = {customer: {firstName: 'Alice'}};
+    render(<Appointment appointment={appointment} />);
     expect(container.querySelector('table')).not.toBeNull();
     expect(container.querySelector('tbody')).not.toBeNull();
     expect(container.querySelector('tr')).not.toBeNull();
@@ -41,6 +46,9 @@ describe('Appointment', () => {
     expect(container.querySelector('td').textContent).toEqual('Alice');
   });
 
+  // it('creates labels for appointment values', () => {
+  //
+  // })
 
 });
 
@@ -51,16 +59,18 @@ describe('AppointmentsDayView', () => {
     ReactDOM.render(component, container);
 
   const today = new Date();
-  const appointments = [
-    {
-      startsAt: today.setHours(12, 0),
-      customer: {firstName: 'Ashley'},
-    },
-    {
-      startsAt: today.setHours(13, 0),
-      customer: {firstName: 'Jordan'},
-    },
-  ];
+
+  // console.log(appointments);
+  // const appointments = [
+  //   {
+  //     startsAt: today.setHours(12, 0),
+  //     customer: {firstName: 'Ashley'},
+  //   },
+  //   {
+  //     startsAt: today.setHours(13, 0),
+  //     customer: {firstName: 'Jordan'},
+  //   },
+  // ];
 
   beforeEach(() => {
     container = document.createElement('div');
@@ -76,19 +86,20 @@ describe('AppointmentsDayView', () => {
     expect(container.querySelector('ol')).not.toBeNull();
     expect(
       container.querySelector('ol').children
-    ).toHaveLength(2);
+    ).toHaveLength(appointments.length);
   })
 
   it('renders each appointment in an li', () => {
     render(<AppointmentsDayView appointments={appointments} />);
-    expect(container.querySelectorAll('li')).toHaveLength(2);
+    expect(container.querySelectorAll('li')).toHaveLength(appointments.length);
     expect(
       container.querySelectorAll('li')[0].textContent
-    ).toEqual('12:00');
+    ).toEqual(appointmentTimeOfDay(appointments[0].startsAt));
     expect(
       container.querySelectorAll('li')[1].textContent
-    ).toEqual('13:00');
+    ).toEqual(appointmentTimeOfDay(appointments[1].startsAt));
   })
+
 
   it('initially shows a message saying there are no appointments today', () => {
     render(<AppointmentsDayView appointments={[]} />);
@@ -99,14 +110,14 @@ describe('AppointmentsDayView', () => {
 
   it('selects the first appointment by default', () => {
     render(<AppointmentsDayView appointments={appointments} />);
-    expect(container.textContent).toMatch('Ashley');
+    expect(container.textContent).toMatch(appointments[0].customer.firstName);
   });
 
   it('has a button element in each li', () => {
     render(<AppointmentsDayView appointments={appointments} />);
     expect (
       container.querySelectorAll('li > button')
-    ).toHaveLength(2);
+    ).toHaveLength(appointments.length);
     expect (
       container.querySelectorAll('li > button')[0].type
     ).toEqual('button');
@@ -116,7 +127,7 @@ describe('AppointmentsDayView', () => {
     render(<AppointmentsDayView appointments={appointments} />);
     const button = container.querySelectorAll('button')[1];
     ReactTestUtils.Simulate.click(button);
-    expect(container.textContent).toMatch(('Jordan'));
+    expect(container.textContent).toMatch((appointments[1].customer.firstName));
   });
 });
 

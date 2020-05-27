@@ -1,18 +1,21 @@
 import React, {useState} from 'react';
 
-export const Appointment = ({ customer }) => (
-  <table>
-    <tbody>
+export const Appointment = ({ appointment }) => {
+  return (
+    <table>
+      <tbody>
       <tr>
         <td>
-          {customer.firstName}
+          {appointment.customer.firstName}
         </td>
       </tr>
-    </tbody>
-  </table>
-);
+      </tbody>
+    </table>
+  );
+};
 
-const appointmentTimeOfDay = startsAt => {
+
+export const appointmentTimeOfDay = startsAt => {
   const [h, m] = new Date(startsAt).toTimeString().split(':');
   return`${h}:${m}`;
 }
@@ -40,7 +43,9 @@ export const AppointmentsDayView = ({appointments}) => {
         appointments.length === 0 ? (
           <p>There are no appointments scheduled for today.</p>
         ) : (
-          <Appointment {...appointments[selectedAppointment]} />
+          <Appointment appointment = {
+            appointments[selectedAppointment]
+          } />
         )
       }
     </div>
