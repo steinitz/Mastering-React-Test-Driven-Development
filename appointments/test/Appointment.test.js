@@ -46,6 +46,11 @@ describe('Appointment', () => {
     expect(container.querySelector('td').textContent).toEqual('Alice');
   });
 
+  it('renders one table row for each appointment info key', () => {
+    render(<Appointment appointment={appointments[0]} />);
+    expect (container.querySelectorAll('tr')).toHaveLength(Object.keys(appointments[0]).length);
+  })
+
   // it('creates labels for appointment values', () => {
   //
   // })
@@ -129,5 +134,6 @@ describe('AppointmentsDayView', () => {
     ReactTestUtils.Simulate.click(button);
     expect(container.textContent).toMatch((appointments[1].customer.firstName));
   });
+
 });
 

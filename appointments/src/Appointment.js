@@ -4,11 +4,21 @@ export const Appointment = ({ appointment }) => {
   return (
     <table>
       <tbody>
-      <tr>
-        <td>
-          {appointment.customer.firstName}
-        </td>
-      </tr>
+      {
+        Object.keys(appointment).map((key) => {
+          return (
+            <tr key={key}>
+              <td>
+                {
+                  key==='customer' ?
+                    appointment[key].firstName :
+                    appointment[key]
+                }
+              </td>
+            </tr>
+          );
+        })
+      }
       </tbody>
     </table>
   );
