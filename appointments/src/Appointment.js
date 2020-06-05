@@ -1,34 +1,50 @@
 import React, {useState} from 'react';
 
-export const Appointment = ({ appointment }) => {
-  return (
-    <table>
-      <tbody>
-      {
-        Object.keys(appointment).map((key) => {
-          return (
-            <tr key={key}>
-              <td>
-                {
-                  key==='customer' ?
-                    appointment[key].firstName :
-                    appointment[key]
-                }
-              </td>
-            </tr>
-          );
-        })
-      }
-      </tbody>
-    </table>
-  );
-};
-
+export const appointmentFieldLabels = [
+  'Customer',
+  'Phone number',
+  'Stylist',
+  'Service',
+  'Notes',
+];
 
 export const appointmentTimeOfDay = startsAt => {
   const [h, m] = new Date(startsAt).toTimeString().split(':');
   return`${h}:${m}`;
 }
+
+export const Appointment = ({ appointment }) => {
+  return (
+    <div>
+      <h2>
+        Today's appointment at {
+          appointmentTimeOfDay(appointment.startsAt)
+        }
+      </h2>
+      <table>
+        <tbody>
+          {
+            Object.keys(appointment).map((key, index) => {
+              return (
+                  <tr key={key}>
+                    <td>{appointmentFieldLabels[index]}</td>
+                    <td>
+                      {
+                        key==='customer' ?
+                          appointment[key].firstName :
+                          appointment[key]
+                      }
+                    </td>
+                  </tr>
+              );
+            })
+          }
+        </tbody>
+      </table>
+    </div>
+  );
+};
+
 
 export const AppointmentsDayView = ({appointments}) => {
   const [

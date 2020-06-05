@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import ReactTestUtils from 'react-dom/test-utils';
 import {
   Appointment,
+  appointmentFieldLabels,
   appointmentTimeOfDay,
   AppointmentsDayView,
 } from '../src/Appointment';
@@ -43,17 +44,41 @@ describe('Appointment', () => {
     expect(container.querySelector('td')).not.toBeNull();
     // querySelector returns first match
     // querySelectorAll returns NodeList (array)
-    expect(container.querySelector('td').textContent).toEqual('Alice');
+    expect(container.querySelectorAll('td')[1].textContent).toEqual('Alice');
   });
 
   it('renders one table row for each appointment info key', () => {
     render(<Appointment appointment={appointments[0]} />);
-    expect (container.querySelectorAll('tr')).toHaveLength(Object.keys(appointments[0]).length);
-  })
+    expect (container.querySelectorAll('tr'))
+      .toHaveLength(Object.keys(appointments[0]).length);
+  });
 
-  // it('creates labels for appointment values', () => {
-  //
-  // })
+  it('creates labels for appointment values', () => {
+    render(<Appointment appointment={appointments[0]} />);
+    expect (
+      container
+      .querySelectorAll('tr')[0]
+      .querySelectorAll('td')[0]
+      .textContent
+    ).toEqual(appointmentFieldLabels[0]);
+    expect (
+      container
+      .querySelectorAll('tr')[1]
+      .querySelectorAll('td')[0]
+      .textContent
+    ).toEqual(appointmentFieldLabels[1]);
+    expect (
+      container
+      .querySelectorAll('tr')[4]
+      .querySelectorAll('td')[0]
+      .textContent
+    ).toEqual(appointmentFieldLabels[4]);
+  });
+
+  it('shows a heading with the appointment time', () => {
+    render(<Appointment appointment={appointments[0]} />);
+    expect(container.querySelector('h2').textContent).toEqual('Today\'s appointment at 09:00');
+  });
 
 });
 
