@@ -12,6 +12,26 @@ import {sampleAppointments} from './sampleData';
 
 const appointments = sampleAppointments;
 
+// General wisdom suggests not testing for classnames
+// But how to test for the side-by-side layout?
+// Maybe snapshot.
+describe('Page Layout', () => {
+  let container;
+  let appointment;
+
+  const render = component =>
+    ReactDOM.render(component, container);
+
+  beforeEach(() => {
+    container = document.createElement('div');
+  });
+
+  it('has a top level layout class', () => {
+    render(<AppointmentsDayView appointments={[]} />);
+    expect(container.firstChild).toHaveClass('appointment-day-layout');
+  })
+})
+
 describe('Appointment', () => {
   let container;
   let appointment;
