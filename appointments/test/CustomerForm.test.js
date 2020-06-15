@@ -2,6 +2,12 @@ import React from 'react';
 import {createContainer} from './domManipulators';
 import {CustomerForm} from '../src/CustomerForm';
 
+const expectToBeInputFieldOfTypeText = formElement =>{
+  expect(formElement).not.toBeNull();
+  expect(formElement.tagName).toEqual('INPUT');
+  expect(formElement.type).toEqual('text');
+}
+
 describe('CustomerForm', () => {
   let render, container;
 
@@ -12,15 +18,19 @@ describe('CustomerForm', () => {
   const form = id => container.querySelector(`form[id="${id}"`);
 
   it('renders a form', () => {
-    render(<CustomerForm />);
+    render(<CustomerForm/>);
     expect(form('customer')).not.toBeNull();
   });
 
   it('renders the first name field as a text box', () => {
-    render(<CustomerForm />);
+    render(<CustomerForm/>);
     const field = form('customer').elements.firstName;
-    expect(field).not.toBeNull();
-    expect(field.tagName).toEqual('INPUT');
-    expect(field.type).toEqual('text');
+    expectToBeInputFieldOfTypeText(field);
+  });
+
+  it('includes any existing value for the first name', () => {
+    render(<CustomerForm firstName="Ashley" />);
+    const field = form('customer').elements.firstName;
+    expect(field.value).toEqual('Ashley');
   })
 });
