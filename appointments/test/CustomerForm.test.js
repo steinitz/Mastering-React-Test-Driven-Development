@@ -59,4 +59,21 @@ describe('CustomerForm', () => {
     await ReactTestUtils.Simulate.submit(form('customer'));
   });
 
+  it('saves new first name when submitted', async () => {
+    expect.hasAssertions();
+    render(
+      <CustomerForm
+        firstName="Ashley"
+        onSubmit={({firstName}) =>
+          expect(firstName).toEqual('Jamie')
+        }
+      />
+    );
+    // we only need to simulate one, the last, keystroke
+    await ReactTestUtils.Simulate.change(firstNameField(), {
+      target: {value: 'Jamie'}
+    });
+    await ReactTestUtils.Simulate.submit(form('customer'));
+  });
+
 });
