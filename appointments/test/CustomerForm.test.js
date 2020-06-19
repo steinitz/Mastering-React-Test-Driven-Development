@@ -17,63 +17,74 @@ describe('CustomerForm', () => {
   });
 
   const form = id => container.querySelector(`form[id="${id}"`);
-  const firstNameField = () => form('customer').elements.firstName;
+  const field = (name) => form('customer').elements[name];
   const labelFor = formElement => container.querySelector(`label[for="${formElement}"`);
 
-  it('renders a label for the first name field', () => {
-    render(<CustomerForm />);
-    expect(labelFor('firstName')).not.toBeNull();
-    expect(labelFor('firstName').textContent).toEqual('First name');
-  });
+  const itRendersAsATextBox = (fieldName) =>
+    it('renders as a text box', () => {
+      render(<CustomerForm/>);
+      expectToBeInputFieldOfTypeText(field(fieldName));
+    });
+
+  const itIncludesTheExistingValue = (fieldName) =>
+    it('includes the existing value', () => {
+      render(<CustomerForm firstName="value" />);
+      expect(field(fieldName).value).toEqual('value');
+    })
 
   it('renders a form', () => {
     render(<CustomerForm/>);
     expect(form('customer')).not.toBeNull();
   });
 
-  it('renders the first name field as a text box', () => {
-    render(<CustomerForm/>);
-    expectToBeInputFieldOfTypeText(firstNameField());
-  });
+  describe('first-name field', () => {
 
-  it('includes any existing value for the first name', () => {
-    render(<CustomerForm firstName="Ashley" />);
-    expect(firstNameField().value).toEqual('Ashley');
-  })
+    itRendersAsATextBox('firstName');
 
-  it('assigns and id that matches the label id to the firstName field', () => {
-    render(<CustomerForm/>);
-    expect(firstNameField().id).toEqual('firstName');
-  });
 
-  it('saves existing first name when submitted', async () => {
-    expect.hasAssertions();
-    render(
-      <CustomerForm
-        firstName="Ashley"
-        onSubmit={({firstName}) =>
-          expect(firstName).toEqual('Ashley')
-        }
-      />
-    );
-    await ReactTestUtils.Simulate.submit(form('customer'));
-  });
+    itIncludesTheExistingValue('firstName');
 
-  it('saves new first name when submitted', async () => {
-    expect.hasAssertions();
-    render(
-      <CustomerForm
-        firstName="Ashley"
-        onSubmit={({firstName}) =>
-          expect(firstName).toEqual('Jamie')
-        }
-      />
-    );
-    // we only need to simulate one, the last, keystroke
-    await ReactTestUtils.Simulate.change(firstNameField(), {
-      target: {value: 'Jamie'}
+    it('renders a label', () => {
+      render(<CustomerForm />);
+      expect(labelFor('firstName')).not.toBeNull();
+      expect(labelFor('firstName').textContent).toEqual('First name');
     });
-    await ReactTestUtils.Simulate.submit(form('customer'));
+
+    it('assigns an id that matches the label id', () => {
+      render(<CustomerForm/>);
+      expect(field('firstName').id).toEqual('firstName');
+    });
+
+    it('saves existing value when submitted', async () => {
+      expect.hasAssertions();
+      render(
+        <CustomerForm
+          firstName="Ashley"
+          onSubmit={({firstName}) =>
+            expect(firstName).toEqual('Ashley')
+          }
+        />
+      );
+      await ReactTestUtils.Simulate.submit(form('customer'));
+    });
+
+    it('saves new value when submitted', async () => {
+      expect.hasAssertions();
+      render(
+        <CustomerForm
+          firstName="Ashley"
+          onSubmit={({firstName}) =>
+            expect(firstName).toEqual('Jamie')
+          }
+        />
+      );
+      // we only need to simulate one, the last, keystroke
+      await ReactTestUtils.Simulate.change(field('firstName'), {
+        target: {value: 'Jamie'}
+      });
+      await ReactTestUtils.Simulate.submit(form('customer'));
+    });
+
   });
 
 });
