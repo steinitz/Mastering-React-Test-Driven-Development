@@ -28,7 +28,7 @@ describe('CustomerForm', () => {
 
   const itIncludesTheExistingValue = (fieldName) =>
     it('includes the existing value', () => {
-      render(<CustomerForm firstName="value" />);
+      render(<CustomerForm {...{[fieldName]: 'value'}} />);
       expect(field(fieldName).value).toEqual('value');
     })
 
@@ -83,14 +83,21 @@ describe('CustomerForm', () => {
   });
 
   describe('first-name field', () => {
-
     itRendersAsATextBox('firstName');
     itIncludesTheExistingValue('firstName');
     itRendersALabel('firstName', 'First name');
     itAssignsAnIdThatMatchesTheLabelId('firstName');
     itSubmitsExistingValue('firstName');
     itSubmitsNewValue('firstName');
+  });
 
+  describe('last-name field', () => {
+    itRendersAsATextBox('lastName');
+    itIncludesTheExistingValue('lastName');
+    itRendersALabel('lastName', 'Last name');
+    itAssignsAnIdThatMatchesTheLabelId('lastName');
+    itSubmitsExistingValue('lastName');
+    itSubmitsNewValue('lastName');
   });
 
 });
