@@ -72,7 +72,7 @@ describe('CustomerForm', () => {
       );
       // we only need to simulate one, the last, keystroke
       await ReactTestUtils.Simulate.change(field(fieldName), {
-        target: {value: 'newValue'}
+        target: {value: 'newValue', name: fieldName}
       });
       await ReactTestUtils.Simulate.submit(form('customer'));
     });
@@ -98,6 +98,15 @@ describe('CustomerForm', () => {
     itAssignsAnIdThatMatchesTheLabelId('lastName');
     itSubmitsExistingValue('lastName');
     itSubmitsNewValue('lastName');
+  });
+
+  describe('phone-number field', () => {
+    itRendersAsATextBox('phoneNumber');
+    itIncludesTheExistingValue('phoneNumber');
+    itRendersALabel('phoneNumber', 'Phone');
+    itAssignsAnIdThatMatchesTheLabelId('phoneNumber');
+    itSubmitsExistingValue('phoneNumber');
+    itSubmitsNewValue('phoneNumber');
   });
 
 });
