@@ -4,12 +4,12 @@ export const CustomerForm = ({
   firstName,
   lastName,
   phoneNumber,
-  onSubmit
+  onSubmit,
 }) => {
   const [customer, setCustomer] = useState({
     firstName,
     lastName,
-    phoneNumber
+    phoneNumber,
   });
 
   const handleChange = ({ target }) =>
@@ -25,7 +25,7 @@ export const CustomerForm = ({
         type="text"
         name="firstName"
         id="firstName"
-        value={firstName}
+        value={customer.firstName}
         onChange={handleChange}
       />
 
@@ -34,7 +34,7 @@ export const CustomerForm = ({
         type="text"
         name="lastName"
         id="lastName"
-        value={lastName}
+        value={customer.lastName}
         onChange={handleChange}
       />
 
@@ -43,7 +43,7 @@ export const CustomerForm = ({
         type="text"
         name="phoneNumber"
         id="phoneNumber"
-        value={phoneNumber}
+        value={customer.phoneNumber}
         onChange={handleChange}
       />
 
