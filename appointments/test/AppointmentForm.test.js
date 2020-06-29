@@ -4,6 +4,7 @@ import {AppointmentForm} from '../src/AppointmentForm';
 
 describe ('AppointmentForm', () => {
   let render, container;
+  const field = name => form('appointment').elements[name];
 
   beforeEach(() => {
     ({render, container} = createContainer());
@@ -14,5 +15,14 @@ describe ('AppointmentForm', () => {
   it('renders a form', () => {
     render(<AppointmentForm />);
     expect(form('appointment')).not.toBeNull();
+  });
+
+  describe('service', () => {
+    it('renders as a select box', () => {
+
+      render(<AppointmentForm />);
+      expect(field('service')).not.toBeNull();
+      expect(field('service').tagName).toEqual('SELECT');
+    });
   });
 });
