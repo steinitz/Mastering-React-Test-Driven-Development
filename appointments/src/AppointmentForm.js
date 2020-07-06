@@ -1,8 +1,21 @@
 import React from 'react';
 
-export const AppointmentForm = ({selectableServices}) => (
-  <form id="appointment">
-    <select name="service">
+export const AppointmentForm = ({
+  selectableServices,
+  service,
+  onSubmit
+}) => (
+  <form
+    id="appointment"
+    onSubmit={() => onSubmit({service})}
+  >
+    <label htmlFor="service">Services</label>
+    <select
+      name="service"
+      id="service"
+      value={service}
+      readOnly
+    >
       <option />
       {
         selectableServices.map(s => (
@@ -10,6 +23,7 @@ export const AppointmentForm = ({selectableServices}) => (
         ))
       }
     </select>
+    <input type="submit" value="Submit" />
   </form>
 );
 
