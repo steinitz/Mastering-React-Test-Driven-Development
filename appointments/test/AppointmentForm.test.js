@@ -64,7 +64,7 @@ import {AppointmentForm} from '../src/AppointmentForm';
       render(
         <AppointmentForm
           selectableServices={services}
-          service="Blow-dry"
+          defaultService="Blow-dry"
         />
       );
       const option = findOption(
@@ -89,13 +89,37 @@ import {AppointmentForm} from '../src/AppointmentForm';
       expect.hasAssertions();
       render(
         <AppointmentForm
-          service="Blow-Dry"
-          onSubmit={props => {
-            // console.log('***props', props)
-            expect(props.service).toEqual('Blow-Dry')
-          }
+          defaultService="Blow-Dry"
+          onSubmit={
+            props => {
+              expect(props.service).toEqual('Blow-Dry')
+            }
           }
         />
+      );
+      await ReactTestUtils.Simulate.submit(form('appointment'));
+    });
+
+    it('saves new value when submitted', async () => {
+      expect.hasAssertions();
+      render(
+        <AppointmentForm
+          defaultService="Cut"
+          onSubmit={
+            props => {
+              expect(props.service).toEqual('Blow-Dry')
+            }
+          }
+        />
+      );
+      await ReactTestUtils.Simulate.change(
+       field('service'),
+       {
+        target: {
+          value: 'Blow-Dry',
+          name: 'service'
+        }
+       }
       );
       await ReactTestUtils.Simulate.submit(form('appointment'));
     });
