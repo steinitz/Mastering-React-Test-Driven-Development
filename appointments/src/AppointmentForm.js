@@ -1,11 +1,44 @@
 import React, { useState } from 'react';
 
-const TimeSlotTable = () => <table id="time-slots" />;
+const dailyTimeSlots = (salonOpensAt, salonClosesAt) => {
+  const totalSlots = (salonClosesAt - salonOpensAt) * 2;
+  const startTime = new Date().setHours(salonOpensAt, 0, 0, 0);
+  const increment = 30 * 60 * 1000;
+  const filledArray = Array(totalSlots).fill([startTime]);
+  const result = filledArray.reduce((acc, cur, i) =>
+    acc.concat([startTime + (i * increment)])
+  );
+  // if (result.length === 4) console.log('***slots', result);
+  return result;
+}
+
+const toTimeValue = timestamp =>
+  new Date(timestamp).toTimeString().substring(0, 5);
+
+const TimeSlotTable = ({
+  salonOpensAt,
+  salonClosesAt
+}) => {
+  const timeSlots = dailyTimeSlots(salonOpensAt, salonClosesAt);
+  return (
+    <table id="time-slots">
+      <tbody>
+        {timeSlots.map(timeSlot => (
+          <tr key={timeSlot}>
+            <th>{toTimeValue(timeSlot)}</th>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+};
 
 export const AppointmentForm = ({
   selectableServices,
   service,
-  onSubmit
+  onSubmit,
+  salonOpensAt,
+  salonClosesAt,
 }) => {
   const [appointment, setAppointment] = useState({ service });
 
@@ -28,7 +61,10 @@ export const AppointmentForm = ({
           <option key={s}>{s}</option>
         ))}
       </select>
-      <TimeSlotTable />
+      <TimeSlotTable
+        salonOpensAt={salonOpensAt}
+        salonClosesAt={salonClosesAt}
+      />
     </form>
   );
 };
@@ -41,5 +77,7 @@ AppointmentForm.defaultProps = {
     'Beard trim',
     'Cut & beard trim',
     'Extensions'
-  ]
+  ],
+  salonOpensAt: 9,
+  salonClosesAt: 19
 };
