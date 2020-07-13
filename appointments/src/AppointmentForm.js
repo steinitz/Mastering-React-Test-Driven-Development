@@ -4,9 +4,9 @@ const dailyTimeSlots = (salonOpensAt, salonClosesAt) => {
   const totalSlots = (salonClosesAt - salonOpensAt) * 2;
   const startTime = new Date().setHours(salonOpensAt, 0, 0, 0);
   const increment = 30 * 60 * 1000;
-  const filledArray = Array(totalSlots).fill([startTime]);
+  const filledArray = Array(totalSlots).fill(startTime);
   const result = filledArray.reduce((acc, cur, i) =>
-    acc.concat([startTime + (i * increment)])
+    acc.concat(startTime + (i * increment)), []
   );
   // if (result.length === 4) console.log('***slots', result);
   return result;
