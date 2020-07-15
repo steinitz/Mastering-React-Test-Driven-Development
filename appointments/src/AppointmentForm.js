@@ -3,25 +3,54 @@ import React, { useState } from 'react';
 const dailyTimeSlots = (salonOpensAt, salonClosesAt) => {
   const totalSlots = (salonClosesAt - salonOpensAt) * 2;
   const startTime = new Date().setHours(salonOpensAt, 0, 0, 0);
-  const increment = 30 * 60 * 1000;
+  const aHalfHour = 30 * 60 * 1000;
   const filledArray = Array(totalSlots).fill(startTime);
   const result = filledArray.reduce((acc, cur, i) =>
-    acc.concat(startTime + (i * increment)), []
+    acc.concat(startTime + (i * aHalfHour)), []
   );
   // if (result.length === 4) console.log('***slots', result);
   return result;
 }
 
+const weeklyDateValues = (startDate) => {
+  const midnight = new Date(startDate).setHours(0,0,0,0);
+  const aDay = 24 * 60 *60 *1000;
+  return Array(7)
+    .fill(midnight)
+    .reduce((acc, cur, i) =>
+      acc.concat(midnight + (i * aDay)),
+      []
+    );
+};
+
 const toTimeValue = timestamp =>
   new Date(timestamp).toTimeString().substring(0, 5);
 
+const toShortDate = timestamp => {
+  const datePartsArray = new Date(timestamp)
+    .toDateString()
+    .split(' ');
+  const[day, , dayOfMonth] = datePartsArray;
+  return `${day} ${dayOfMonth}`;
+}
+
 const TimeSlotTable = ({
   salonOpensAt,
-  salonClosesAt
+  salonClosesAt,
+  today
 }) => {
   const timeSlots = dailyTimeSlots(salonOpensAt, salonClosesAt);
+  const dates = weeklyDateValues(today);
   return (
     <table id="time-slots">
+      <thead>
+        <tr>
+          <th />
+          {dates.map(d => (
+            <th key={d}>{toShortDate(d)}</th>
+          ))}
+        </tr>
+      </thead>
       <tbody>
         {timeSlots.map(timeSlot => (
           <tr key={timeSlot}>
@@ -39,6 +68,7 @@ export const AppointmentForm = ({
   onSubmit,
   salonOpensAt,
   salonClosesAt,
+  today,
 }) => {
   const [appointment, setAppointment] = useState({ service });
 
@@ -64,12 +94,14 @@ export const AppointmentForm = ({
       <TimeSlotTable
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
+        today={today}
       />
     </form>
   );
 };
 
 AppointmentForm.defaultProps = {
+  today: new Date(),
   selectableServices: [
     'Cut',
     'Blow-dry',
