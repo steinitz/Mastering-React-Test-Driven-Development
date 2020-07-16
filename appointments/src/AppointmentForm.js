@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
 
+const timeIncrements = (numTimes, startTime, increment) =>
+  Array(numTimes)
+    .fill(startTime)
+    .reduce((acc, cur, i) =>
+      acc.concat(startTime + (i * increment)),
+      []
+    );
+
 const dailyTimeSlots = (salonOpensAt, salonClosesAt) => {
   const totalSlots = (salonClosesAt - salonOpensAt) * 2;
   const startTime = new Date().setHours(salonOpensAt, 0, 0, 0);
   const aHalfHour = 30 * 60 * 1000;
-  const filledArray = Array(totalSlots).fill(startTime);
-  const result = filledArray.reduce((acc, cur, i) =>
-    acc.concat(startTime + (i * aHalfHour)), []
-  );
-  // if (result.length === 4) console.log('***slots', result);
-  return result;
+  return timeIncrements(totalSlots, startTime, aHalfHour);
 }
 
 const weeklyDateValues = (startDate) => {
   const midnight = new Date(startDate).setHours(0,0,0,0);
   const aDay = 24 * 60 *60 *1000;
-  return Array(7)
-    .fill(midnight)
-    .reduce((acc, cur, i) =>
-      acc.concat(midnight + (i * aDay)),
-      []
-    );
+  return timeIncrements(7, midnight, aDay);
 };
 
 const toTimeValue = timestamp =>
