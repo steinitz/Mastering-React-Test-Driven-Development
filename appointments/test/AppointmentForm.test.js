@@ -135,7 +135,7 @@ describe('AppointmentForm', () => {
       expect(timesOfDay[0].textContent).toEqual('09:00');
       expect(timesOfDay[1].textContent).toEqual('09:30');
       expect(timesOfDay[3].textContent).toEqual('10:30');
-    })
+    });
 
     it('renders an empty cell at the start of the header row', () => {
       render(<AppointmentForm />);
@@ -155,7 +155,28 @@ describe('AppointmentForm', () => {
       expect(dates[0].textContent).toEqual('Sat 01');
       expect(dates[1].textContent).toEqual('Sun 02');
       expect(dates[6].textContent).toEqual('Fri 07');
-    })
+    });
+
+    it('renders a radio button for each time slot', () => {
+      const today = new Date();
+      const availableTimeSlots = [
+        {startsAt: today.setHours(9, 0, 0, 0)},
+        {startsAt: today.setHours(9, 30, 0, 0)},
+      ];
+      render(
+        <AppointmentForm
+          availableTimeSlots={availableTimeSlots}
+          today={today}
+        />
+      );
+      const cells = timeSlotTable().querySelectorAll('td');
+      expect(
+        cells[0].querySelector('input[type="radio"]')
+      ).not.toBeNull();
+      expect(
+        cells[7].querySelector('input[type="radio"]')
+      ).not.toBeNull();
+    });
 
   });
 });
