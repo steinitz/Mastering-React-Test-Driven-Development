@@ -178,5 +178,11 @@ describe('AppointmentForm', () => {
       ).not.toBeNull();
     });
 
+    it('does not render radio buttons for unavailable time slots', () => {
+      render(<AppointmentForm availableTimeSlots={[]} />);
+      const timesOfDay = timeSlotTable().querySelectorAll('input');
+      expect(timesOfDay).toHaveLength(0);
+    })
+
   });
 });
