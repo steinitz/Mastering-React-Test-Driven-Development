@@ -46,7 +46,7 @@ const mergeDateAndTime = (date, timeSlot) => {
   return result;
 };
 
-const RadioButonIfAvailable = ({
+const RadioButtonIfAvailable = ({
   availableTimeSlots,
   date,
   timeSlot
@@ -55,6 +55,7 @@ const RadioButonIfAvailable = ({
   const isStartsAtAvailable = availableTimeSlots.some(
     availableTimeSlots => availableTimeSlots.startsAt === startsAt
   );
+  const isChecked = startsAt === timeSlot
   let result = null;
   if(isStartsAtAvailable) {
     result = (
@@ -62,6 +63,8 @@ const RadioButonIfAvailable = ({
         name="startsAt"
         type="radio"
         value={startsAt}
+        checked={isChecked}
+        readOnly
       />
     )
   }
@@ -95,7 +98,7 @@ const TimeSlotTable = ({
               dates.map(
                 date => (
                   <td key={date}>
-                    <RadioButonIfAvailable
+                    <RadioButtonIfAvailable
                       availableTimeSlots={availableTimeSlots}
                       date={date}
                       timeSlot={timeSlot}
