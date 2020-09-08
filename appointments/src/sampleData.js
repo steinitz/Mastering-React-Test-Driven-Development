@@ -2,11 +2,14 @@ import { name, phone, lorem } from 'faker';
 
 Array.prototype.unique = function() {
   return this.filter(function(value, index, self) {
+    // returns true for the first occurance of a non-unique value,
+    // but false for later occurances - and so eliminiating them
     return self.indexOf(value) === index;
   });
 };
 
 Array.prototype.pickRandom = function() {
+  // works because Math.floor returns an integer LT or EQ to it's argument
   return this[Math.floor(Math.random() * this.length)];
 };
 
@@ -53,12 +56,16 @@ export const sampleAppointments = [
 
 const pickMany = (items, number) =>
   Array(number)
+    // have to fill the array with something for the map to work
+    // note fill() which fills it with undefined should also work
     .fill(1)
     .map(() => items.pickRandom());
+
 
 const buildTimeSlots = () => {
   const today = new Date();
   const startTime = today.setHours(9, 0, 0, 0);
+
   const times = [...Array(7).keys()].map(day => {
     const daysToAdd = day * 24 * 60 * 60 * 1000;
     return [...Array(20).keys()].map(halfHour => {
@@ -68,10 +75,17 @@ const buildTimeSlots = () => {
       };
     });
   });
-  return [].concat(...times);
+  const result = [].concat(...times);
+  console.log('buildTimeSlots - timeSlots', result);
+  return result;
 };
 
-export const sampleAvailableTimeSlots = pickMany(
-  buildTimeSlots(),
-  50
-);
+const availableTimeSlots = () => {
+  const result = pickMany(
+    buildTimeSlots(),
+    50
+  );
+  return result;
+};
+
+export const sampleAvailableTimeSlots = availableTimeSlots();

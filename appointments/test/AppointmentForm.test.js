@@ -122,6 +122,17 @@ describe('AppointmentForm', () => {
     });
   });
 
+  describe('stylist field', () => {
+    it("renders as a select box", () => {
+      render(<AppointmentForm />);
+      expect(field('stylist')).not.toBeNull();
+      expect(field('stylist').tagName).toEqual('SELECT');
+    })
+    it('renders stylists from sampleData', () => {
+      console.log(sam)
+    })
+  });
+
   const timeSlotTable = () =>
     container.querySelector('table#time-slots');
 

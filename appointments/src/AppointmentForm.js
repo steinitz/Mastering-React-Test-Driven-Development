@@ -149,6 +149,17 @@ export const AppointmentForm = ({
         ))}
       </select>
 
+      <select
+        name="stylist"
+        id="stylist"
+        value={service}
+        onChange={handleServiceChange}>
+        <option />
+        {selectableServices.map(s => (
+          <option key={s}>{s}</option>
+        ))}
+      </select>
+
       <TimeSlotTable
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
