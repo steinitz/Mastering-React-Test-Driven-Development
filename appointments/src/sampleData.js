@@ -61,17 +61,23 @@ const pickMany = (items, number) =>
     .fill(1)
     .map(() => items.pickRandom());
 
+const millisecondsForDayAndHalfHour = (
+  day, // current day in series from start time: 0, 1, 2...6
+  halfHour // current half hour: 0, 1, 2, 19
+) => {
+  const oneMinute = 60 * 1000;
+  const result = oneMinute * (day * 24 * 60 + halfHour * 30);
+  return result;
+}
 
 const buildTimeSlots = () => {
   const today = new Date();
   const startTime = today.setHours(9, 0, 0, 0);
 
   const times = [...Array(7).keys()].map(day => {
-    const daysToAdd = day * 24 * 60 * 60 * 1000;
     return [...Array(20).keys()].map(halfHour => {
-      const halfHoursToAdd = halfHour * 30 * 60 * 1000;
-      return {
-        startsAt: startTime + daysToAdd + halfHoursToAdd
+       return {
+        startsAt: startTime + millisecondsForDayAndHalfHour(day, halfHour),
       };
     });
   });
