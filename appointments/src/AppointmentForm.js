@@ -40,15 +40,20 @@ const mergeDateAndTime = (date, timeSlot) => {
   );
 };
 
+// ideas for implementing stylist selection
+const timeslotsForStylist = (stylist) => {};
+const stylistsProvidingService = (service) => {};
+
 const RadioButtonIfAvailable = ({
   availableTimeSlots,
+  stylist,
   date,
   timeSlot,
   checkedTimeSlot,
   handleChange
 }) => {
   const startsAt = mergeDateAndTime(date, timeSlot);
-  if (availableTimeSlots.some(a => a.startsAt === startsAt)) {
+  if (availableTimeSlots(stylist).some(a => a.startsAt === startsAt)) {
     const isChecked = startsAt === checkedTimeSlot;
     return (
       <input
@@ -64,6 +69,7 @@ const RadioButtonIfAvailable = ({
 };
 
 const TimeSlotTable = ({
+  stylist,
   salonOpensAt,
   salonClosesAt,
   today,
@@ -90,7 +96,8 @@ const TimeSlotTable = ({
             {dates.map(date => (
               <td key={date}>
                 <RadioButtonIfAvailable
-                  availableTimeSlots={availableTimeSlots}
+                  stylist={stylist}
+                  availableTimeSlots={availableTimeSlots(stylist)}
                   date={date}
                   timeSlot={timeSlot}
                   checkedTimeSlot={checkedTimeSlot}
@@ -108,6 +115,8 @@ const TimeSlotTable = ({
 export const AppointmentForm = ({
   selectableServices,
   service,
+  selectableStylists,
+  stylist,
   onSubmit,
   salonOpensAt,
   salonClosesAt,
@@ -117,6 +126,7 @@ export const AppointmentForm = ({
 }) => {
   const [appointment, setAppointment] = useState({
     service,
+    stylist,
     startsAt
   });
 
@@ -124,6 +134,12 @@ export const AppointmentForm = ({
     setAppointment(appointment => ({
       ...appointment,
       service: value
+    }));
+
+ const handleStylistChange = ({ target: { value } }) =>
+    setAppointment(appointment => ({
+      ...appointment,
+      stylist: value
     }));
 
   const handleStartsAtChange = useCallback(
@@ -152,15 +168,16 @@ export const AppointmentForm = ({
       <select
         name="stylist"
         id="stylist"
-        value={service}
-        onChange={handleServiceChange}>
+        value={stylist}
+        onChange={handleStylistChange}>
         <option />
-        {selectableServices.map(s => (
+        {selectableStylists.map(s => (
           <option key={s}>{s}</option>
         ))}
       </select>
 
       <TimeSlotTable
+        stylist={stylist}
         salonOpensAt={salonOpensAt}
         salonClosesAt={salonClosesAt}
         today={today}
@@ -175,7 +192,8 @@ export const AppointmentForm = ({
 };
 
 AppointmentForm.defaultProps = {
-  availableTimeSlots: [],
+  stylist: 'Rula',
+  availableTimeSlots: (stylist) => [],
   today: new Date(),
   salonOpensAt: 9,
   salonClosesAt: 19,
@@ -186,5 +204,11 @@ AppointmentForm.defaultProps = {
     'Beard trim',
     'Cut & beard trim',
     'Extensions'
+  ],
+  selectableStylists: [
+    'Jenny',
+    'Rula',
+    'Cindy',
+    'Angie'
   ]
 };

@@ -68,7 +68,7 @@ const millisecondsForDayAndHalfHour = (
   const oneMinute = 60 * 1000;
   const result = oneMinute * (day * 24 * 60 + halfHour * 30);
   return result;
-}
+};
 
 const buildTimeSlots = () => {
   const today = new Date();
@@ -86,12 +86,21 @@ const buildTimeSlots = () => {
   return result;
 };
 
-const availableTimeSlots = () => {
-  const result = pickMany(
-    buildTimeSlots(),
-    50
-  );
+const staticAvailableTimeSlots = {};
+
+const availableTimeSlots = (stylist) => {
+  let result = staticAvailableTimeSlots[stylist];
+  console.log('static result for', stylist, '=', result)
+  if (result === undefined) {
+    result = pickMany(
+      buildTimeSlots(),
+      50
+    );
+    console.log('created static result for', stylist, result)
+    staticAvailableTimeSlots[stylist] = result;
+  }
   return result;
 };
 
-export const sampleAvailableTimeSlots = availableTimeSlots();
+// export const sampleAvailableTimeSlots = availableTimeSlots("fred");
+export const availableTimeSlots;

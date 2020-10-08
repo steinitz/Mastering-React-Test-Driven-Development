@@ -129,7 +129,7 @@ describe('AppointmentForm', () => {
       expect(field('stylist').tagName).toEqual('SELECT');
     })
     it('renders stylists from sampleData', () => {
-      console.log(sam)
+      // console.log(sampleData);
     })
   });
 
@@ -138,11 +138,16 @@ describe('AppointmentForm', () => {
 
   describe('time slot table', () => {
     const today = new Date();
-    const availableTimeSlots = [
-      { startsAt: today.setHours(9, 0, 0, 0) },
-      { startsAt: today.setHours(9, 30, 0, 0) }
-    ];
+    // const availableTimeSlots = [
+    //   { startsAt: today.setHours(9, 0, 0, 0) },
+    //   { startsAt: today.setHours(9, 30, 0, 0) }
+    // ];
 
+    const availableTimeSlots = () =>
+      [
+        { startsAt: today.setHours(9, 0, 0, 0) },
+        { startsAt: today.setHours(9, 30, 0, 0) }
+      ];
     it('renders a table for time slots', () => {
       render(<AppointmentForm />);
       expect(timeSlotTable()).not.toBeNull();
