@@ -18,8 +18,12 @@ export const CustomerForm = ({
       [target.name]: target.value
     }));
 
+
   return (
-    <form id="customer" onSubmit={() => onSubmit(customer)}>
+    <form
+      id="customer"
+      onSubmit={() => onSubmit(customer)}
+    >
       <label htmlFor="firstName">First name</label>
       <input
         type="text"
