@@ -3,6 +3,15 @@ import ReactTestUtils from 'react-dom/test-utils';
 import { createContainer } from './domManipulators';
 import { CustomerForm } from '../src/CustomerForm';
 
+const spy = () => {
+  let receivedArguments;
+  return {
+    fn:(...args) => (receivedArguments = args),
+    receivedArguments: () => receivedArguments,
+    receivedArgument: n => receivedArguments[n]
+  }
+}
+
 describe('CustomerForm', () => {
   let render, container;
 
@@ -61,32 +70,17 @@ describe('CustomerForm', () => {
 
   const itSubmitsExistingValue = (fieldName) =>
     it('saves existing value when submitted', async () => {
-      let submitArg;
-
+      const submitSpy = spy();
       render(
         <CustomerForm
           {...{ [fieldName]: 'value' }}
-          onSubmit={customer => submitArg = customer}
+          onSubmit={submitSpy.fn}
         />
       );
       ReactTestUtils.Simulate.submit(form('customer'));
-      expect(submitArg).toBeDefined();
-      expect(submitArg[fieldName]).toEqual('value');
+      expect(submitSpy.receivedArguments()).toBeDefined();
+      expect(submitSpy.receivedArgument(0)[fieldName]).toEqual('value');
     });
-
-  // const itSubmitsExistingValue = (fieldName, value) =>
-  //   it('saves existing value when submitted', async () => {
-  //     expect.hasAssertions();
-  //     render(
-  //       <CustomerForm
-  //         {...{ [fieldName]: value }}
-  //         onSubmit={props =>
-  //           expect(props[fieldName]).toEqual(value)
-  //         }
-  //       />
-  //     );
-  //     await ReactTestUtils.Simulate.submit(form('customer'));
-  //   });
 
   const itSubmitsNewValue = (fieldName, value) =>
     it('saves new value when submitted', async () => {
