@@ -49,6 +49,29 @@ describe('CustomerForm', () => {
     expect(submitButton).not.toBeNull();
   });
 
+  it(
+    'calls fetch with the right properites when submitting data',
+    async () => {
+      const fetchSpy = spy();
+      render(
+        <CustomerForm
+          fetch={fetchSpy.fn}
+          onSubmit={() => {}}
+        />
+      );
+      ReactTestUtils.Simulate.submit(form('customer'));
+      expect(fetchSpy).toHaveBeenCalled();
+      expect(fetchSpy.receivedArgument(0)).toEqual('/customers');
+
+      const fetchOpts = fetchSpy.receivedArgument(1);
+      expect(fetchOpts.method).toEqual('POST');
+      expect(fetchOpts.method).toEqual('same-origin');
+      expect(fetchOpts.headers).toEqual(
+        {'content-Type': 'application/json'}
+      );
+    }
+  )
+
   const expectToBeInputFieldOfTypeText = formElement => {
     expect(formElement).not.toBeNull();
     expect(formElement.tagName).toEqual('INPUT');
