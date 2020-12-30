@@ -65,9 +65,9 @@ describe('CustomerForm', () => {
 
       const fetchOpts = fetchSpy.receivedArgument(1);
       expect(fetchOpts.method).toEqual('POST');
-      expect(fetchOpts.method).toEqual('same-origin');
+      expect(fetchOpts.credentials).toEqual('same-origin');
       expect(fetchOpts.headers).toEqual(
-        {'content-Type': 'application/json'}
+        {'Content-Type': 'application/json'}
       );
     }
   )
