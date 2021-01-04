@@ -4,7 +4,6 @@ export const CustomerForm = ({
   firstName,
   lastName,
   phoneNumber,
-  onSubmit,
   fetch
 }) => {
   const [customer, setCustomer] = useState({
@@ -20,13 +19,13 @@ export const CustomerForm = ({
     }));
 
   const handleSubmit = () => {
-    onSubmit(customer);
     fetch(
       '/customers',
       {
         method: 'POST',
         credentials: 'same-origin',
-        headers: {'Content-Type': 'application/json'}
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(customer)
       }
     );
   }
