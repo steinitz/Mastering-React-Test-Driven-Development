@@ -4,7 +4,6 @@ export const CustomerForm = ({
   firstName,
   lastName,
   phoneNumber,
-  fetch
 }) => {
   const [customer, setCustomer] = useState({
     firstName,
@@ -19,7 +18,7 @@ export const CustomerForm = ({
     }));
 
   const handleSubmit = () => {
-    fetch(
+    window.fetch(
       '/customers',
       {
         method: 'POST',
@@ -64,6 +63,3 @@ export const CustomerForm = ({
   );
 };
 
-CustomerForm.defaultProps = {
-  fetch: async() => {}
-}

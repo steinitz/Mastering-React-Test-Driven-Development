@@ -60,11 +60,7 @@ describe('CustomerForm', () => {
   it(
     'calls fetch with the right properites when submitting data',
     async () => {
-      render(
-        <CustomerForm
-          fetch={fetchSpy.fn}
-        />
-      );
+      render(<CustomerForm />);
       ReactTestUtils.Simulate.submit(form('customer'));
       expect(fetchSpy).toHaveBeenCalled();
       expect(fetchSpy.receivedArgument(0)).toEqual('/customers');
@@ -115,7 +111,6 @@ describe('CustomerForm', () => {
       render(
         <CustomerForm
           {...{ [fieldName]: 'value' }}
-          fetch={fetchSpy.fn}
         />
       );
 
@@ -131,7 +126,6 @@ describe('CustomerForm', () => {
       render(
         <CustomerForm
           {...{ [fieldName]: 'existingValue' }}
-          fetch={fetchSpy.fn}
         />
       );
       ReactTestUtils.Simulate.change(field(fieldName), {
