@@ -19,9 +19,14 @@ describe('CustomerForm', () => {
   })
 
   const spy = () => {
+    let returnValue;
     let receivedArguments;
     return {
-      fn: (...args) => (receivedArguments = args),
+      fn: (...args) => {
+        receivedArguments = args;
+        return returnValue
+      },
+      stubReturnValue: value => returnValue = value,
       receivedArguments: () => receivedArguments,
       receivedArgument: n => receivedArguments[n]
     };
