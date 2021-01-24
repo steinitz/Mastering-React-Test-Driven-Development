@@ -4,6 +4,7 @@ export const CustomerForm = ({
   firstName,
   lastName,
   phoneNumber,
+  onSave
 }) => {
   const [customer, setCustomer] = useState({
     firstName,
@@ -17,8 +18,9 @@ export const CustomerForm = ({
       [target.name]: target.value
     }));
 
-  const handleSubmit = () => {
-    window.fetch(
+  const handleSubmit = async event => {
+    event.preventDefault();
+    const result = await window.fetch(
       '/customers',
       {
         method: 'POST',
@@ -27,6 +29,10 @@ export const CustomerForm = ({
         body: JSON.stringify(customer)
       }
     );
+    if(result.ok) {
+      const customerWithId = await result.json();
+      onSave(customerWithId);
+    }
   }
 
   return (
@@ -63,3 +69,6 @@ export const CustomerForm = ({
   );
 };
 
+CustomerForm.defaultProps = {
+  onSave: () => {}
+};
