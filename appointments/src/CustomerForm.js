@@ -76,7 +76,7 @@ export const CustomerForm = ({
 };
 
 CustomerForm.defaultProps = {
-  onSave: () => {}
+  onSave: () => {},
 };
 
 const Error = () => (
