@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {AppointmentForm} from './AppointmentForm';
 
 
-export const AppointmentFormLoader = () => {
+export const AppointmentFormLoader = props => {
   const [
     availableTimeSlots,
     setAvailableTimeSlots
@@ -22,6 +22,9 @@ export const AppointmentFormLoader = () => {
   }, []);
 
   return (
-    <AppointmentForm availableTimeSlots={availableTimeSlots} />
+    <AppointmentForm
+      {...props}
+      availableTimeSlots={availableTimeSlots}
+    />
   );
 };
